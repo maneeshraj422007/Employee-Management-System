@@ -35,8 +35,8 @@ function EmployeeList({
           </thead>
 
           <tbody>
-            {employees.map((employee, index) => (
-              <tr key={index}>
+            {employees.map((employee) => (
+              <tr key={employee._id}>
                 <td>{employee.employeeId}</td>
                 <td>{employee.name}</td>
                 <td>{employee.email}</td>
@@ -54,7 +54,7 @@ function EmployeeList({
 
                   <button
                     onClick={() =>
-                      handleDelete(employee.employeeId)
+                      handleDelete(employee._id)
                     }
                   >
                     Delete
