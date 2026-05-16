@@ -6,6 +6,8 @@ import "./App.css";
 import EmployeeForm from "./components/EmployeeForm";
 import EmployeeList from "./components/EmployeeList";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 function App() {
   const [employees, setEmployees] = useState([]);
 
@@ -14,9 +16,7 @@ function App() {
   // FETCH EMPLOYEES
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/employees"
-      );
+      const response = await axios.get(API_URL);
 
       setEmployees(response.data);
     } catch (error) {
@@ -33,10 +33,7 @@ function App() {
   // ADD EMPLOYEE
   const addEmployee = async (employeeData) => {
     try {
-      await axios.post(
-        "http://localhost:5000/api/employees",
-        employeeData
-      );
+      await axios.post(API_URL, employeeData);
 
       fetchEmployees();
     } catch (error) {
@@ -49,7 +46,7 @@ function App() {
   const deleteEmployee = async (employeeId) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/employees/${employeeId}`
+        `${API_URL}/${employeeId}`
       );
 
       fetchEmployees();
@@ -60,10 +57,12 @@ function App() {
   };
 
   // UPDATE EMPLOYEE
-  const updateEmployee = async (updatedEmployeeData) => {
+  const updateEmployee = async (
+    updatedEmployeeData
+  ) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/employees/${updatedEmployeeData._id}`,
+        `${API_URL}/${updatedEmployeeData._id}`,
         updatedEmployeeData
       );
 
