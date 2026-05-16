@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
 import "./App.css";
 
 import EmployeeForm from "./components/EmployeeForm";
@@ -9,28 +11,69 @@ function App() {
 
   const [editEmployee, setEditEmployee] = useState(null);
 
-  const addEmployee = (employeeData) => {
-    setEmployees([...employees, employeeData]);
+  // FETCH EMPLOYEES
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/employees"
+      );
+
+      setEmployees(response.data);
+    } catch (error) {
+      console.log("Error fetching employees");
+      console.log(error);
+    }
   };
 
-  const deleteEmployee = (employeeId) => {
-    const updatedEmployees = employees.filter(
-      (employee) => employee.employeeId !== employeeId
-    );
+  // LOAD EMPLOYEES WHEN PAGE LOADS
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
 
-    setEmployees(updatedEmployees);
+  // ADD EMPLOYEE
+  const addEmployee = async (employeeData) => {
+    try {
+      await axios.post(
+        "http://localhost:5000/api/employees",
+        employeeData
+      );
+
+      fetchEmployees();
+    } catch (error) {
+      console.log("Error adding employee");
+      console.log(error);
+    }
   };
 
-  const updateEmployee = (updatedEmployeeData) => {
-    const updatedEmployees = employees.map((employee) =>
-      employee.employeeId === updatedEmployeeData.employeeId
-        ? updatedEmployeeData
-        : employee
-    );
+  // DELETE EMPLOYEE
+  const deleteEmployee = async (employeeId) => {
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/employees/${employeeId}`
+      );
 
-    setEmployees(updatedEmployees);
+      fetchEmployees();
+    } catch (error) {
+      console.log("Error deleting employee");
+      console.log(error);
+    }
+  };
 
-    setEditEmployee(null);
+  // UPDATE EMPLOYEE
+  const updateEmployee = async (updatedEmployeeData) => {
+    try {
+      await axios.put(
+        `http://localhost:5000/api/employees/${updatedEmployeeData._id}`,
+        updatedEmployeeData
+      );
+
+      setEditEmployee(null);
+
+      fetchEmployees();
+    } catch (error) {
+      console.log("Error updating employee");
+      console.log(error);
+    }
   };
 
   return (
