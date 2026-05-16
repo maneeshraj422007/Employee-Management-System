@@ -1,6 +1,10 @@
 import React from "react";
 
-function EmployeeList({ employees, deleteEmployee }) {
+function EmployeeList({
+  employees,
+  deleteEmployee,
+  setEditEmployee,
+}) {
   const handleDelete = (employeeId) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this employee?"
@@ -26,7 +30,7 @@ function EmployeeList({ employees, deleteEmployee }) {
               <th>Email</th>
               <th>Department</th>
               <th>Salary</th>
-              <th>Action</th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -40,6 +44,14 @@ function EmployeeList({ employees, deleteEmployee }) {
                 <td>{employee.salary}</td>
 
                 <td>
+                  <button
+                    onClick={() =>
+                      setEditEmployee(employee)
+                    }
+                  >
+                    Edit
+                  </button>
+
                   <button
                     onClick={() =>
                       handleDelete(employee.employeeId)
