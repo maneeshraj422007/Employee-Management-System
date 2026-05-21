@@ -18,6 +18,15 @@ function App() {
   const [departmentFilter, setDepartmentFilter] = useState("All");
 
   const [sortOrder, setSortOrder] = useState("default");
+  
+  const uniqueDepartments = [
+  "All",
+  ...new Set(
+    employees.map(
+      (employee) => employee.department
+    )
+  ),
+];
 
   // FETCH EMPLOYEES
   const fetchEmployees = async () => {
@@ -136,11 +145,14 @@ function App() {
           }
           className="filter-select"
         >
-          <option value="All">All Departments</option>
-          <option value="IT">IT</option>
-          <option value="HR">HR</option>
-          <option value="Finance">Finance</option>
-          <option value="Marketing">Marketing</option>
+          {uniqueDepartments.map((department) => (
+			<option
+				key={department}
+				value={department}
+			>
+				{department}
+			</option>
+		   ))}
         </select>
 
         <select
