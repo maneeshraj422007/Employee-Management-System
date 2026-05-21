@@ -13,6 +13,12 @@ function App() {
 
   const [editEmployee, setEditEmployee] = useState(null);
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [departmentFilter, setDepartmentFilter] = useState("All");
+
+  const [sortOrder, setSortOrder] = useState("default");
+
   // FETCH EMPLOYEES
   const fetchEmployees = async () => {
     try {
@@ -25,7 +31,6 @@ function App() {
     }
   };
 
-  // LOAD EMPLOYEES WHEN PAGE LOADS
   useEffect(() => {
     fetchEmployees();
   }, []);
@@ -37,7 +42,6 @@ function App() {
 
       fetchEmployees();
     } catch (error) {
-      console.log("Error adding employee");
       console.log(error);
     }
   };
@@ -45,21 +49,16 @@ function App() {
   // DELETE EMPLOYEE
   const deleteEmployee = async (employeeId) => {
     try {
-      await axios.delete(
-        `${API_URL}/${employeeId}`
-      );
+      await axios.delete(`${API_URL}/${employeeId}`);
 
       fetchEmployees();
     } catch (error) {
-      console.log("Error deleting employee");
       console.log(error);
     }
   };
 
   // UPDATE EMPLOYEE
-  const updateEmployee = async (
-    updatedEmployeeData
-  ) => {
+  const updateEmployee = async (updatedEmployeeData) => {
     try {
       await axios.put(
         `${API_URL}/${updatedEmployeeData._id}`,
@@ -70,11 +69,41 @@ function App() {
 
       fetchEmployees();
     } catch (error) {
-      console.log("Error updating employee");
       console.log(error);
     }
   };
+   // SEARCH
+   let filteredEmployees = employees.filter((employee) => {
+    return (
+      employee.name
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase()) ||
+      employee.email
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+  });
 
+  // FILTER
+  if (departmentFilter !== "All") {
+    filteredEmployees = filteredEmployees.filter(
+      (employee) =>
+        employee.department === departmentFilter
+    );
+  }
+
+  // SORT
+  if (sortOrder === "salary-low") {
+    filteredEmployees.sort(
+      (a, b) => a.salary - b.salary
+    );
+  }
+
+  if (sortOrder === "salary-high") {
+    filteredEmployees.sort(
+      (a, b) => b.salary - a.salary
+    );
+  }
   return (
     <div className="app-container">
       <h1 className="main-heading">
@@ -87,13 +116,56 @@ function App() {
         updateEmployee={updateEmployee}
       />
 
+      {/* SEARCH FILTER SORT SECTION */}
+
+      <div className="controls-container">
+        <input
+          type="text"
+          placeholder="Search by name or email"
+          value={searchTerm}
+          onChange={(e) =>
+            setSearchTerm(e.target.value)
+          }
+          className="search-input"
+        />
+
+        <select
+          value={departmentFilter}
+          onChange={(e) =>
+            setDepartmentFilter(e.target.value)
+          }
+          className="filter-select"
+        >
+          <option value="All">All Departments</option>
+          <option value="IT">IT</option>
+          <option value="HR">HR</option>
+          <option value="Finance">Finance</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+
+        <select
+          value={sortOrder}
+          onChange={(e) =>
+            setSortOrder(e.target.value)
+          }
+          className="filter-select"
+        >
+          <option value="default">Sort By</option>
+          <option value="salary-low">
+            Salary Low to High
+          </option>
+          <option value="salary-high">
+            Salary High to Low
+          </option>
+        </select>
+      </div>
+
       <EmployeeList
-        employees={employees}
+        employees={filteredEmployees}
         deleteEmployee={deleteEmployee}
         setEditEmployee={setEditEmployee}
       />
     </div>
   );
 }
-
 export default App;

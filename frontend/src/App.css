@@ -1,88 +1,96 @@
-body {
-  margin: 0;
+* {
+    margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   font-family: Arial, sans-serif;
-  background-color: #f4f6f9;
+  background-color: #f5f7fa;
 }
 
 .app-container {
-  width: 90%;
+  width: 95%;
+  max-width: 1200px;
   margin: auto;
   padding: 20px;
 }
 
 .main-heading {
   text-align: center;
+  margin-bottom: 25px;
   color: #333;
-  margin-bottom: 30px;
 }
 
-.form-container {
+/* FORM */
+
+form {
   background: white;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
 }
 
-.form-title {
-  margin-bottom: 20px;
-  color: #444;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-input {
+form input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  font-size: 14px;
 }
 
-.form-input:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.error-text {
-  color: red;
-  font-size: 13px;
-  margin-top: 5px;
-}
-
-.submit-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 20px;
+form button {
+  width: 100%;
+  padding: 12px;
   border: none;
   border-radius: 5px;
+  background-color: #007bff;
+  color: white;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px;
 }
 
-.submit-btn:hover {
+form button:hover {
   background-color: #0056b3;
 }
 
-.table-container {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+/* CONTROLS */
+
+.controls-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
+.search-input,
+.filter-select {
+  flex: 1;
+  min-width: 220px;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* TABLE */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 .employee-table {
   width: 100%;
+  min-width: 900px;
   border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .employee-table th,
 .employee-table td {
-  border: 1px solid #ddd;
   padding: 12px;
+  border: 1px solid #ddd;
   text-align: center;
 }
 
@@ -92,5 +100,79 @@ body {
 }
 
 .employee-table tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #f9f9f9;
+}
+
+.employee-table button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+.employee-table button:first-child {
+  background-color: #28a745;
+}
+
+.employee-table button:last-child {
+  background-color: #dc3545;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media screen and (max-width: 768px) {
+  .main-heading {
+    font-size: 24px;
+  }
+
+  form {
+    padding: 15px;
+  }
+
+  .controls-container {
+    flex-direction: column;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+  }
+
+  .employee-table th,
+  .employee-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+  
+  .table-container {
+  overflow-x: auto;
+}
+
+.employee-table {
+  min-width: 800px;
+}
+
+  .employee-table button {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main-heading {
+    font-size: 20px;
+  }
+
+  form input,
+  form button {
+    font-size: 14px;
+  }
+
+  .employee-table th,
+  .employee-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
 }
